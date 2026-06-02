@@ -76,7 +76,7 @@ box-shadow:0 0 10px rgba(0,0,0,0.5);
 <div id="downloadArea">
 <table id="table">
 <tr>
-<th>Day</th><th>work</th><th>Time</th><th>Date</th><th>Remove</th>
+<th>Day</th><th>subject</th><th>Time</th><th>Date</th><th>Remove</th>
 </tr>
 </table>
 </div>
@@ -146,7 +146,7 @@ el.style.color = color;
 
 /* ADD */
 function add(){
-let subject = document.getElementById("work").value;
+let subject = document.getElementById("subject").value;
 let day = document.getElementById("day").value;
 let time = document.getElementById("timeInput").value;
 let date = document.getElementById("dateInput").value;
@@ -161,7 +161,7 @@ let row = table.insertRow();
 
 row.innerHTML = `
 <td>${day}</td>
-<td>${work}</td>
+<td>${subject}</td>
 <td>${time}</td>
 <td>${date}</td>
 <td><button class="remove-btn" onclick="this.parentElement.parentElement.remove()">X</button></td>
