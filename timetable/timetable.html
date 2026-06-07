@@ -51,7 +51,6 @@ width:auto;
 }
 
 </style>
-</style>
 </head>
 
 <body>
@@ -86,7 +85,17 @@ width:auto;
 
 <input type="date" id="dateInput">
 
-<button onclick="add()">Add</button>
+<div id="downloadArea">
+<table id="table">
+<tr>
+<th>Day</th>
+<th>Subject</th>
+<th>Time</th>
+<th>Date</th>
+<th>Remove</th>
+</tr>
+</table>
+</div>
 
 </div>
 
@@ -155,12 +164,12 @@ el.style.color = color;
 
 /* ADD */
 function add(){
-let work = document.getElementById("work").value;
+let subject = document.getElementById("subject").value;
 let day = document.getElementById("day").value;
 let time = document.getElementById("timeInput").value;
 let date = document.getElementById("dateInput").value;
 
-if(!work || !time || !date){
+if(!subject || !time || !date){
 alert("Fill all fields");
 return;
 }
@@ -170,7 +179,7 @@ let row = table.insertRow();
 
 row.innerHTML = `
 <td>${day}</td>
-<td>${work}</td>
+<td>${subject}</td>
 <td>${time}</td>
 <td>${date}</td>
 <td><button class="remove-btn" onclick="this.parentElement.parentElement.remove()">X</button></td>
