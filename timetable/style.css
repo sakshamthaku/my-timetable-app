@@ -1,0 +1,94 @@
+/* PROFESSIONAL RESPONSIVE DESIGN */
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+}
+
+/* INPUT AREA */
+.container input,
+.container select{
+    min-height:48px;
+    font-size:16px;
+}
+
+/* HEADER */
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.top-buttons{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.top-buttons button{
+    width:50px;
+    height:50px;
+    font-size:18px;
+}
+
+/* TABLE */
+#downloadArea{
+    overflow-x:auto;
+}
+
+table{
+    min-width:700px;
+}
+
+/* DASHBOARD */
+.card{
+    box-shadow:0 10px 25px rgba(0,0,0,.1);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+.container{
+    padding:15px;
+}
+
+h2{
+    font-size:32px;
+}
+
+input,
+select,
+button{
+    width:100%;
+    box-sizing:border-box;
+    margin-bottom:10px;
+}
+
+.top-buttons{
+    width:100%;
+    justify-content:center;
+}
+
+.top-buttons button{
+    width:45px;
+    height:45px;
+}
+
+.popup{
+    width:90%;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+#fontColorPicker{
+    right:10px;
+    bottom:10px;
+}
+
+table{
+    font-size:14px;
+}
+}
