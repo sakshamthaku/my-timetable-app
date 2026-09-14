@@ -1,60 +1,332 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Dashboard</title>
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TIME-table Dashboard | Powered by NoteZ + NICO</title> 
+  <style> 
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-  <style>
-    body {
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+
+    @keyframes floatParticle {
+      0% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(-15px) translateX(10px); }
+      100% { transform: translateY(0px) translateX(0px); }
+    }
+
+    :root {
+      --bg-dark: #070908;
+      --bg-card: rgba(18, 30, 22, 0.7);
+      --border-color: rgba(16, 185, 129, 0.2);
+      --accent-green: #10b981;
+      --accent-blue: #3b82f6;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+    }
+
+    * {
       margin: 0;
-      font-family: Arial;
-      background: #f3f4f6;
+      padding: 0;
+      box-sizing: border-box;
     }
 
- .container{
-max-width:1200px;
-margin:auto;
-padding:25px;
-}
-
-.card{
-padding:30px;
-border-radius:20px;
-box-shadow:0 10px 30px rgba(0,0,0,.12);
-}
-
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      margin-top: 20px;
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      position: relative;
     }
 
-    .btn {
-      padding: 12px 20px;
-      background: black;
-      color: white;
-      border-radius: 10px;
+    /* Animated background gradients */
+    body::before, body::after {
+      content: '';
+      position: absolute;
+      width: 450px;
+      height: 450px;
+      border-radius: 50%;
+      filter: blur(120px);
+      z-index: -1;
+      animation: pulseGlow 8s ease-in-out infinite;
+    }
+
+    body::before {
+      top: -100px;
+      left: -100px;
+      background: rgba(16, 185, 129, 0.15);
+    }
+
+    body::after {
+      bottom: -100px;
+      right: -100px;
+      background: rgba(59, 130, 246, 0.15);
+      animation-delay: 4s;
+    }
+
+    /* Header Design */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(7, 9, 8, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      border-image: linear-gradient(90deg, rgba(16,185,129,0.4), rgba(59,130,246,0.4)) 1;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: auto;
+      padding: 15px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #10b981, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
       text-decoration: none;
-      display: inline-block;
+      font-size: 14px;
+      font-weight: 500;
+      position: relative;
+      transition: color 0.3s ease;
     }
-  </style>
-</head>
 
-<body>
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background: linear-gradient(90deg, #10b981, #3b82f6);
+      transition: width 0.3s ease;
+    }
 
-<div class="container">
-  <h1>Dashboard</h1>
-  <p>Welcome! Manage your timetable.</p>
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
 
-  <div class="card">
-    <!-- IMPORTANT: This opens your timetable file -->
-    <a href="timetable.html" class="btn">
-  Open Timetable
-</a>
-    
-  </div>
-</div>
+    .nav-links a:hover::after {
+      width: 100%;
+    }
 
-</body>
+    /* Container */
+    .container { 
+      max-width: 1200px; 
+      margin: auto; 
+      padding: 40px 25px; 
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 100%;
+      animation: fadeInUp 0.8s ease-out;
+    } 
+
+    /* Main Card / Glassmorphism */
+    .card { 
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      padding: 50px 40px; 
+      border-radius: 24px; 
+      border: 1px solid var(--border-green);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(16, 185, 129, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .card h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, #ffffff 30%, #9ca3af 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      margin-bottom: 35px;
+      max-width: 550px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.5;
+    }
+
+    /* Premium Button styling keeping functionality exact */
+    .btn { 
+      padding: 16px 36px; 
+      background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+      color: white; 
+      border-radius: 12px; 
+      text-decoration: none; 
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      font-size: 16px;
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .btn:hover { 
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    /* Footer Design */
+    footer {
+      background: rgba(7, 9, 8, 0.9);
+      border-top: 1px solid var(--border-green);
+      padding: 25px 25px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-green);
+    }
+
+    .footer-brand {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* Responsive Mobile Overrides */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px 15px;
+      }
+      .nav-links {
+        gap: 15px;
+      }
+      .card {
+        padding: 30px 20px;
+      }
+      .container {
+        padding: 20px 15px;
+      }
+    }
+  </style> 
+</head> 
+<body> 
+
+  <!-- Professional Header -->
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <span>⏱</span> TIME-table
+      </div>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="timetable.html">Create Time Table</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Dashboard Container -->
+  <div class="container"> 
+    <div class="card"> 
+      <h1>TIME TABLE</h1> 
+      <p>Plan your schedule. Organize your time. Stay productive with a next-generation scheduling interface.</p> 
+      
+      <!-- IMPORTANT: Exact functionality kept intact, pointing strictly to timetable.html -->
+      <a href="timetable.html" class="btn"> 
+        <span>📅 Open Timetable</span>
+      </a> 
+    </div> 
+  </div> 
+
+  <!-- Professional Footer -->
+  <footer>
+    <div class="footer-brand">TIME-table &bull; Powered by NoteZ + NICO</div>
+    <ul class="footer-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="timetable.html">Create Time Table</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#" target="_blank" rel="noopener">Main Website</a></li>
+    </ul>
+  </footer>
+
+</body> 
 </html>
