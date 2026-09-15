@@ -1,53 +1,1209 @@
 <!DOCTYPE html>
-<a href="index.html">
-← Back to Dashboard
-</a>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pro Timetable</title>
+
+<title>NoteZ Timetable</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
-body{margin:0;font-family:Arial;background:#0f0f0f;color:white}
-header{display:flex;justify-content:space-between;padding:15px;background:#111}
-.top-buttons button{margin-left:6px;padding:8px;border-radius:8px;border:none;cursor:pointer}
 
-.container{max-width:900px;margin:auto;padding:20px}
-input,select{padding:10px;border-radius:8px;border:none;margin:5px 0}
+/* =========================================================
+   NOTEZ FUTURISTIC TIMETABLE
+========================================================= */
 
-table{width:100%;border-collapse:collapse;margin-top:20px}
-th,td{border:1px solid #333;padding:8px;text-align:center}
-
-.remove-btn{background:red;color:white;border:none;border-radius:5px}
-
-.popup{
-position:fixed;top:20%;left:50%;transform:translateX(-50%);
-background:#222;padding:20px;border-radius:10px;display:none;width:300px
+:root{
+    --green:#22c55e;
+    --green-light:#4ade80;
+    --green-dark:#16a34a;
+    --bg:#020705;
+    --panel:#07120c;
+    --panel-2:#0a1810;
+    --border:rgba(34,197,94,.16);
+    --text:#eafff0;
+    --muted:#70847a;
+    --danger:#ef4444;
+    --shadow:0 25px 80px rgba(0,0,0,.45);
 }
 
-/* FLOATING COLOR PICKER */
-#fontColorPicker{
-position:fixed;
-bottom:20px;
-right:20px;
+*{
+    box-sizing:border-box;
 }
 
-/* RESPONSIVE FIX */
+html{
+    scroll-behavior:smooth;
+}
 
-@media(min-width:769px){
+body{
+    margin:0;
+    min-height:100vh;
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+    color:var(--text);
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            rgba(34,197,94,.18),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 0% 80%,
+            rgba(22,163,74,.12),
+            transparent 30%
+        ),
+        var(--bg);
+    overflow-x:hidden;
+}
+
+/* =========================================================
+   BACKGROUND ANIMATION
+========================================================= */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:-3;
+
+    background-image:
+        linear-gradient(
+            rgba(34,197,94,.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(34,197,94,.035) 1px,
+            transparent 1px
+        );
+
+    background-size:45px 45px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            black,
+            transparent 90%
+        );
+
+    animation:gridMove 18s linear infinite;
+}
+
+@keyframes gridMove{
+    from{
+        background-position:0 0;
+    }
+
+    to{
+        background-position:45px 45px;
+    }
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    width:500px;
+    height:500px;
+    border-radius:50%;
+    background:rgba(34,197,94,.07);
+    filter:blur(130px);
+    left:50%;
+    top:45%;
+    transform:translate(-50%,-50%);
+    pointer-events:none;
+    z-index:-2;
+    animation:glowPulse 5s ease-in-out infinite;
+}
+
+@keyframes glowPulse{
+    0%,100%{
+        opacity:.55;
+        transform:translate(-50%,-50%) scale(1);
+    }
+
+    50%{
+        opacity:1;
+        transform:translate(-50%,-50%) scale(1.12);
+    }
+}
+
+/* =========================================================
+   TOP NAVIGATION
+========================================================= */
+
+header{
+    position:sticky;
+    top:0;
+    z-index:100;
+
+    min-height:74px;
+    padding:0 5%;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+
+    background:rgba(2,7,5,.78);
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+
+    border-bottom:1px solid rgba(34,197,94,.13);
+
+    box-shadow:
+        0 10px 40px rgba(0,0,0,.25);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:42px;
+    height:42px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:13px;
+
+    background:var(--green);
+    color:#031007;
+
+    font-size:18px;
+    font-weight:1000;
+
+    box-shadow:
+        0 0 25px rgba(34,197,94,.4);
+
+    animation:logoFloat 3s ease-in-out infinite;
+}
+
+@keyframes logoFloat{
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-3px);
+    }
+}
+
+.brand-info h2{
+    margin:0;
+    font-size:15px;
+    font-weight:950;
+}
+
+.brand-info span{
+    display:block;
+    margin-top:3px;
+
+    color:#52685d;
+    font-size:8px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+.back-link{
+    color:#779084;
+    text-decoration:none;
+
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+
+    padding:9px 13px;
+
+    border:1px solid var(--border);
+    border-radius:10px;
+
+    background:rgba(34,197,94,.035);
+
+    font-size:9px;
+    font-weight:850;
+
+    transition:.25s ease;
+}
+
+.back-link:hover{
+    color:var(--green);
+    border-color:rgba(34,197,94,.4);
+    transform:translateY(-2px);
+}
+
+/* =========================================================
+   HEADER BUTTONS
+========================================================= */
+
+.top-buttons{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.top-buttons button{
+    width:38px;
+    height:38px;
+
+    border:1px solid var(--border);
+    border-radius:10px;
+
+    background:rgba(34,197,94,.045);
+    color:#91a49a;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        color .2s ease,
+        border-color .2s ease;
+}
+
+.top-buttons button:hover{
+    color:var(--green);
+    background:rgba(34,197,94,.1);
+    border-color:rgba(34,197,94,.42);
+    transform:translateY(-3px);
+    box-shadow:0 8px 25px rgba(34,197,94,.12);
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
 
 .container{
-display:flex;
-flex-direction:column;
+    width:min(1100px,92%);
+    margin:auto;
+    padding:55px 0 70px;
+
+    position:relative;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+    text-align:center;
+    max-width:720px;
+    margin:0 auto 42px;
+
+    animation:heroIn .7s ease both;
+}
+
+@keyframes heroIn{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+
+    padding:8px 13px;
+
+    border:1px solid rgba(34,197,94,.2);
+    border-radius:999px;
+
+    background:rgba(34,197,94,.045);
+
+    color:#69df91;
+
+    font-size:8px;
+    font-weight:950;
+    letter-spacing:1.5px;
+}
+
+.hero-badge i{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+
+    background:var(--green);
+
+    box-shadow:
+        0 0 10px var(--green);
+
+    animation:dotPulse 1.8s infinite;
+}
+
+@keyframes dotPulse{
+    50%{
+        transform:scale(1.7);
+        opacity:.5;
+    }
+}
+
+.hero h1{
+    margin:20px 0 12px;
+
+    font-size:clamp(42px,7vw,76px);
+    line-height:.95;
+
+    letter-spacing:-4px;
+
+    font-weight:1000;
+}
+
+.hero h1 span{
+    color:var(--green);
+
+    text-shadow:
+        0 0 40px rgba(34,197,94,.28);
+}
+
+.hero p{
+    margin:auto;
+
+    max-width:600px;
+
+    color:var(--muted);
+
+    font-size:12px;
+    line-height:1.7;
+}
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.tool-panel{
+    padding:22px;
+
+    border:1px solid var(--border);
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(10,27,16,.88),
+            rgba(3,10,6,.94)
+        );
+
+    box-shadow:var(--shadow);
+
+    backdrop-filter:blur(20px);
+
+    animation:cardIn .6s ease both;
+}
+
+@keyframes cardIn{
+    from{
+        opacity:0;
+        transform:translateY(18px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.form-row{
+    display:grid;
+
+    grid-template-columns:
+        1.5fr
+        1fr
+        1fr
+        1fr
+        auto;
+
+    gap:9px;
+
+    align-items:end;
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.field label{
+    color:#5e7569;
+
+    font-size:7px;
+    font-weight:950;
+
+    letter-spacing:1.3px;
+    text-transform:uppercase;
 }
 
 input,
 select{
-width:auto;
+    width:100%;
+
+    min-height:43px;
+
+    padding:10px 12px;
+
+    border-radius:10px;
+
+    border:1px solid rgba(34,197,94,.13);
+
+    outline:none;
+
+    background:rgba(0,0,0,.3);
+
+    color:#dffff0;
+
+    font-size:11px;
+
+    transition:.2s ease;
 }
+
+input::placeholder{
+    color:#4e6258;
+}
+
+input:focus,
+select:focus{
+    border-color:rgba(34,197,94,.55);
+
+    box-shadow:
+        0 0 0 3px rgba(34,197,94,.06),
+        0 0 20px rgba(34,197,94,.05);
+}
+
+select option{
+    background:#07120c;
+    color:white;
+}
+
+.add-btn{
+    min-height:43px;
+
+    padding:0 20px;
+
+    border:0;
+    border-radius:10px;
+
+    background:var(--green);
+
+    color:#031007;
+
+    font-size:10px;
+    font-weight:950;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 8px 25px rgba(34,197,94,.16);
+
+    transition:.2s ease;
+}
+
+.add-btn:hover{
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 13px 35px rgba(34,197,94,.27);
+}
+
+/* =========================================================
+   TIMETABLE AREA
+========================================================= */
+
+#downloadArea{
+    margin-top:18px;
+
+    padding:18px;
+
+    border:1px solid rgba(34,197,94,.1);
+    border-radius:17px;
+
+    background:rgba(0,0,0,.13);
+
+    overflow:hidden;
+}
+
+.table-heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:10px;
+}
+
+.table-heading strong{
+    font-size:12px;
+}
+
+.table-heading span{
+    color:#52685d;
+    font-size:8px;
+}
+
+.table-scroll{
+    width:100%;
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+
+    min-width:650px;
+
+    border-collapse:separate;
+    border-spacing:0;
+
+    overflow:hidden;
+
+    border:1px solid rgba(34,197,94,.1);
+    border-radius:13px;
+}
+
+th,
+td{
+    padding:12px 10px;
+
+    text-align:center;
+
+    border-bottom:1px solid rgba(34,197,94,.08);
+    border-right:1px solid rgba(34,197,94,.06);
+
+    font-size:9px;
+}
+
+th{
+    color:#67df90;
+
+    background:rgba(34,197,94,.06);
+
+    font-size:8px;
+
+    letter-spacing:.8px;
+    text-transform:uppercase;
+}
+
+td{
+    color:#a9bbb1;
+    background:rgba(4,13,8,.6);
+}
+
+tr:last-child td{
+    border-bottom:0;
+}
+
+td:last-child,
+th:last-child{
+    border-right:0;
+}
+
+tbody tr{
+    transition:.2s ease;
+}
+
+tbody tr:hover td{
+    background:rgba(34,197,94,.045);
+    color:#eafff0;
+}
+
+/* =========================================================
+   REMOVE BUTTON
+========================================================= */
+
+.remove-btn{
+    border:1px solid rgba(239,68,68,.15);
+
+    background:rgba(239,68,68,.06);
+
+    color:#ef8888;
+
+    width:29px;
+    height:29px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:11px;
+    font-weight:900;
+
+    transition:.2s ease;
+}
+
+.remove-btn:hover{
+    background:rgba(239,68,68,.16);
+    border-color:rgba(239,68,68,.4);
+
+    transform:scale(1.08);
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state{
+    text-align:center;
+    padding:30px 15px;
+
+    color:#4d6257;
+
+    font-size:10px;
+}
+
+.empty-state strong{
+    display:block;
+
+    color:#71867b;
+
+    font-size:12px;
+
+    margin-bottom:5px;
+}
+
+/* =========================================================
+   POPUPS
+========================================================= */
+
+.popup{
+    position:fixed;
+
+    top:50%;
+    left:50%;
+
+    transform:
+        translate(-50%,-46%)
+        scale(.94);
+
+    opacity:0;
+    visibility:hidden;
+
+    z-index:1000;
+
+    width:min(420px,calc(100% - 30px));
+
+    padding:25px;
+
+    border:1px solid rgba(34,197,94,.23);
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(8,22,13,.98),
+            rgba(2,9,5,.99)
+        );
+
+    box-shadow:
+        0 35px 100px rgba(0,0,0,.7),
+        0 0 50px rgba(34,197,94,.05);
+
+    backdrop-filter:blur(25px);
+
+    transition:
+        opacity .25s ease,
+        transform .25s ease,
+        visibility .25s ease;
+}
+
+.popup.active{
+    opacity:1;
+    visibility:visible;
+
+    transform:
+        translate(-50%,-50%)
+        scale(1);
+}
+
+.popup::before{
+    content:"";
+
+    position:absolute;
+
+    width:150px;
+    height:150px;
+
+    border-radius:50%;
+
+    background:rgba(34,197,94,.08);
+
+    filter:blur(50px);
+
+    top:-60px;
+    right:-50px;
+
+    pointer-events:none;
+}
+
+.popup h3{
+    margin:0 0 20px;
+
+    font-size:18px;
+}
+
+.popup p{
+    color:#6e8277;
+
+    font-size:10px;
+
+    line-height:1.7;
+}
+
+/* =========================================================
+   POPUP OVERLAY
+========================================================= */
+
+.popup-overlay{
+    position:fixed;
+
+    inset:0;
+
+    z-index:999;
+
+    background:rgba(0,0,0,.65);
+
+    backdrop-filter:blur(8px);
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:.25s ease;
+}
+
+.popup-overlay.active{
+    opacity:1;
+    visibility:visible;
+}
+
+/* =========================================================
+   POPUP CLOSE
+========================================================= */
+
+.popup-close{
+    width:100%;
+
+    margin-top:18px;
+
+    min-height:40px;
+
+    border-radius:10px;
+
+    border:1px solid var(--border);
+
+    background:rgba(34,197,94,.05);
+
+    color:#91a49a;
+
+    cursor:pointer;
+
+    font-size:10px;
+    font-weight:850;
+
+    transition:.2s ease;
+}
+
+.popup-close:hover{
+    color:var(--green);
+    border-color:rgba(34,197,94,.4);
+}
+
+/* =========================================================
+   CALCULATOR
+========================================================= */
+
+.calculator{
+    width:100%;
+}
+
+.calc-display{
+    width:100%;
+
+    height:58px;
+
+    margin-bottom:12px;
+
+    padding:12px;
+
+    border:1px solid rgba(34,197,94,.17);
+
+    border-radius:12px;
+
+    background:#020805;
+
+    color:#7df0a2;
+
+    font-size:20px;
+
+    font-weight:800;
+
+    text-align:right;
+}
+
+.calc-grid{
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:7px;
+}
+
+.calc-grid button{
+    min-height:48px;
+
+    border:1px solid rgba(34,197,94,.1);
+
+    border-radius:10px;
+
+    background:rgba(34,197,94,.045);
+
+    color:#a9bdb2;
+
+    cursor:pointer;
+
+    font-size:13px;
+    font-weight:800;
+
+    transition:.15s ease;
+}
+
+.calc-grid button:hover{
+    background:rgba(34,197,94,.13);
+
+    color:var(--green);
+
+    transform:translateY(-2px);
+}
+
+.calc-grid .operator{
+    color:var(--green);
+
+    background:rgba(34,197,94,.08);
+}
+
+.calc-grid .equals{
+    background:var(--green);
+
+    color:#031007;
+
+    border:0;
+}
+
+.calc-grid .clear{
+    color:#ef8888;
+}
+
+/* =========================================================
+   TIME UI
+========================================================= */
+
+.clock-card{
+    text-align:center;
+
+    padding:15px 0;
+}
+
+.clock-label{
+    color:#5e7569;
+
+    font-size:8px;
+
+    letter-spacing:2px;
+
+    font-weight:900;
+}
+
+#timeDisplay{
+    margin:12px 0;
+
+    color:var(--green);
+
+    font-size:clamp(35px,8vw,55px);
+
+    font-weight:1000;
+
+    letter-spacing:-2px;
+
+    text-shadow:
+        0 0 30px rgba(34,197,94,.3);
+}
+
+.clock-line{
+    width:100px;
+    height:2px;
+
+    margin:auto;
+
+    background:var(--green);
+
+    box-shadow:
+        0 0 15px rgba(34,197,94,.8);
+}
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+.color-setting{
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+
+    gap:15px;
+
+    padding:14px;
+
+    border:1px solid rgba(34,197,94,.1);
+
+    border-radius:12px;
+
+    background:rgba(0,0,0,.18);
+}
+
+.color-setting span{
+    color:#758980;
+    font-size:10px;
+}
+
+.color-setting input{
+    width:55px;
+    height:35px;
+
+    padding:2px;
+
+    cursor:pointer;
+}
+
+/* =========================================================
+   FLOATING FONT COLOR
+========================================================= */
+
+#fontColorPicker{
+    position:fixed;
+
+    right:22px;
+    bottom:22px;
+
+    z-index:80;
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    padding:8px 10px;
+
+    border:1px solid rgba(34,197,94,.15);
+    border-radius:999px;
+
+    background:rgba(3,10,6,.85);
+
+    backdrop-filter:blur(15px);
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.3);
+}
+
+#fontColorPicker label{
+    color:#71867b;
+
+    font-size:8px;
+    font-weight:900;
+}
+
+#fontColorPicker input{
+    width:25px;
+    min-height:25px;
+    height:25px;
+
+    padding:2px;
+
+    margin:0;
+
+    border:0;
+
+    border-radius:50%;
+
+    cursor:pointer;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+    text-align:center;
+
+    padding:20px;
+
+    color:#3f554a;
+
+    font-size:8px;
+}
+
+footer strong{
+    color:#5e7569;
+}
+
+/* =========================================================
+   RESPONSIVE TABLET
+========================================================= */
+
+@media(max-width:850px){
+
+    .form-row{
+        grid-template-columns:
+            1fr
+            1fr;
+    }
+
+    .field:first-child{
+        grid-column:1 / -1;
+    }
+
+    .add-btn{
+        width:100%;
+    }
+
+}
+
+/* =========================================================
+   RESPONSIVE MOBILE
+========================================================= */
+
+@media(max-width:600px){
+
+    header{
+        min-height:68px;
+
+        padding:0 4%;
+
+        gap:8px;
+    }
+
+    .brand-info span{
+        display:none;
+    }
+
+    .brand-info h2{
+        font-size:13px;
+    }
+
+    .logo{
+        width:37px;
+        height:37px;
+    }
+
+    .back-link{
+        display:none;
+    }
+
+    .top-buttons{
+        gap:4px;
+    }
+
+    .top-buttons button{
+        width:34px;
+        height:34px;
+        font-size:13px;
+    }
+
+    .container{
+        width:92%;
+
+        padding:
+            42px 0
+            65px;
+    }
+
+    .hero{
+        margin-bottom:30px;
+    }
+
+    .hero h1{
+        font-size:46px;
+        letter-spacing:-2.5px;
+    }
+
+    .hero p{
+        font-size:10px;
+    }
+
+    .tool-panel{
+        padding:15px;
+
+        border-radius:17px;
+    }
+
+    .form-row{
+        grid-template-columns:1fr;
+    }
+
+    .field:first-child{
+        grid-column:auto;
+    }
+
+    #downloadArea{
+        padding:10px;
+    }
+
+    .table-heading{
+        align-items:flex-start;
+        flex-direction:column;
+        gap:4px;
+    }
+
+    #fontColorPicker{
+        right:12px;
+        bottom:12px;
+    }
+
+}
+
+/* =========================================================
+   VERY SMALL PHONE
+========================================================= */
+
+@media(max-width:380px){
+
+    .hero h1{
+        font-size:40px;
+    }
+
+    .top-buttons button{
+        width:31px;
+        height:31px;
+    }
+
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        scroll-behavior:auto !important;
+        transition-duration:.01ms !important;
+    }
+
 }
 
 </style>
@@ -55,190 +1211,1227 @@ width:auto;
 
 <body>
 
-<header>
-<h2>📅 Timetable</h2>
+<!-- ========================================================
+     HEADER
+======================================================== -->
 
-<div class="top-buttons">
-<button onclick="openPopup('settingsBox')">⚙️</button>
-<button onclick="openPopup('calcBox')">🧮</button>
-<button onclick="openPopup('timeBox')">🕒</button>
-<button onclick="downloadPNG()">🖼</button>
-<button onclick="downloadPDF()">📄</button>
-</div>
+<header>
+
+    <div class="brand">
+
+        <div class="logo">
+            N
+        </div>
+
+        <div class="brand-info">
+
+            <h2>NoteZ Timetable</h2>
+
+            <span>
+                Smart Productivity Tool
+            </span>
+
+        </div>
+
+    </div>
+
+    <a
+        href="index.html"
+        class="back-link"
+    >
+        ← Back to Dashboard
+    </a>
+
+    <div class="top-buttons">
+
+        <button
+            title="Settings"
+            onclick="openPopup('settingsBox')"
+        >
+            ⚙️
+        </button>
+
+        <button
+            title="Calculator"
+            onclick="openPopup('calcBox')"
+        >
+            🧮
+        </button>
+
+        <button
+            title="Live Time"
+            onclick="openPopup('timeBox')"
+        >
+            🕒
+        </button>
+
+        <button
+            title="Download PNG"
+            onclick="downloadPNG()"
+        >
+            🖼
+        </button>
+
+        <button
+            title="Download PDF"
+            onclick="downloadPDF()"
+        >
+            📄
+        </button>
+
+    </div>
+
 </header>
 
-<div class="form-row">
 
-<input id="subject" placeholder="Subject">
+<!-- ========================================================
+     POPUP OVERLAY
+======================================================== -->
 
-<select id="day">
-<option>Monday</option>
-<option>Tuesday</option>
-<option>Wednesday</option>
-<option>Thursday</option>
-<option>Friday</option>
-<option>Saturday</option>
-<option>Sunday</option>
-</select>
+<div
+    id="popupOverlay"
+    class="popup-overlay"
+    onclick="closeAll()"
+></div>
 
-<input type="time" id="timeInput">
 
-<input type="date" id="dateInput">
+<!-- ========================================================
+     MAIN
+======================================================== -->
 
-<div id="downloadArea">
-<button onclick="add()">Add</button>
-<table id="table">
-<tr>
-<th>Day</th>
-<th>Subject</th>
-<th>Time</th>
-<th>Date</th>
-<th>Remove</th>
-</tr>
-</table>
+<div class="container">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-badge">
+
+            <i></i>
+
+            NOTEZ PRODUCTIVITY TOOL
+
+        </div>
+
+        <h1>
+            Plan Your<br>
+            <span>Time.</span>
+        </h1>
+
+        <p>
+            Create, organize and export your timetable
+            with a clean futuristic workspace designed
+            for students, professionals and everyday planning.
+        </p>
+
+    </section>
+
+
+    <!-- TOOL PANEL -->
+
+    <section class="tool-panel">
+
+        <div class="form-row">
+
+            <div class="field">
+
+                <label>
+                    Subject
+                </label>
+
+                <input
+                    id="subject"
+                    placeholder="Enter subject..."
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Day
+                </label>
+
+                <select id="day">
+
+                    <option>Monday</option>
+                    <option>Tuesday</option>
+                    <option>Wednesday</option>
+                    <option>Thursday</option>
+                    <option>Friday</option>
+                    <option>Saturday</option>
+                    <option>Sunday</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Time
+                </label>
+
+                <input
+                    type="time"
+                    id="timeInput"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Date
+                </label>
+
+                <input
+                    type="date"
+                    id="dateInput"
+                >
+
+            </div>
+
+
+            <button
+                class="add-btn"
+                onclick="add()"
+            >
+                + Add
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             DOWNLOAD AREA
+        ================================================= -->
+
+        <div id="downloadArea">
+
+            <div class="table-heading">
+
+                <strong>
+                    📅 My Timetable
+                </strong>
+
+                <span>
+                    Your schedule workspace
+                </span>
+
+            </div>
+
+
+            <div class="table-scroll">
+
+                <table id="table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Day
+                            </th>
+
+                            <th>
+                                Subject
+                            </th>
+
+                            <th>
+                                Time
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Remove
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tableBody">
+
+                    </tbody>
+
+                </table>
+
+                <div
+                    id="emptyState"
+                    class="empty-state"
+                >
+
+                    <strong>
+                        No timetable entries yet
+                    </strong>
+
+                    Add your first subject above.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
 </div>
 
-</div>
+
+<!-- ========================================================
+     SETTINGS
+======================================================== -->
+
+<div
+    id="settingsBox"
+    class="popup"
+>
+
+    <h3>
+        ⚙️ Settings
+    </h3>
+
+    <p>
+        Customize the workspace background.
+    </p>
+
+    <div class="color-setting">
+
+        <span>
+            Background Color
+        </span>
+
+        <input
+            type="color"
+            value="#020705"
+            onchange="changeBackground(this.value)"
+        >
+
+    </div>
+
+    <button
+        class="popup-close"
+        onclick="closeAll()"
+    >
+        Close
+    </button>
 
 </div>
 
-<!-- SETTINGS -->
-<div id="settingsBox" class="popup">
-<h3>⚙️ Settings</h3>
-<input type="color" onchange="document.body.style.background=this.value">
-<br><br>
-<button onclick="closeAll()">Close</button>
+
+<!-- ========================================================
+     CALCULATOR
+======================================================== -->
+
+<div
+    id="calcBox"
+    class="popup"
+>
+
+    <h3>
+        🧮 Calculator
+    </h3>
+
+    <div class="calculator">
+
+        <input
+            id="calcInput"
+            class="calc-display"
+            readonly
+        >
+
+        <div class="calc-grid">
+
+            <button
+                class="clear"
+                onclick="clearCalc()"
+            >
+                C
+            </button>
+
+            <button onclick="press('(')">
+                (
+            </button>
+
+            <button onclick="press(')')">
+                )
+            </button>
+
+            <button
+                class="operator"
+                onclick="press('/')"
+            >
+                ÷
+            </button>
+
+
+            <button onclick="press('7')">
+                7
+            </button>
+
+            <button onclick="press('8')">
+                8
+            </button>
+
+            <button onclick="press('9')">
+                9
+            </button>
+
+            <button
+                class="operator"
+                onclick="press('*')"
+            >
+                ×
+            </button>
+
+
+            <button onclick="press('4')">
+                4
+            </button>
+
+            <button onclick="press('5')">
+                5
+            </button>
+
+            <button onclick="press('6')">
+                6
+            </button>
+
+            <button
+                class="operator"
+                onclick="press('-')"
+            >
+                −
+            </button>
+
+
+            <button onclick="press('1')">
+                1
+            </button>
+
+            <button onclick="press('2')">
+                2
+            </button>
+
+            <button onclick="press('3')">
+                3
+            </button>
+
+            <button
+                class="operator"
+                onclick="press('+')"
+            >
+                +
+            </button>
+
+
+            <button onclick="press('0')">
+                0
+            </button>
+
+            <button onclick="press('.')">
+                .
+            </button>
+
+            <button
+                class="equals"
+                style="grid-column:span 2"
+                onclick="calculate()"
+            >
+                =
+            </button>
+
+        </div>
+
+    </div>
+
+    <button
+        class="popup-close"
+        onclick="closeAll()"
+    >
+        Close Calculator
+    </button>
+
 </div>
 
-<!-- CALCULATOR -->
-<div id="calcBox" class="popup">
-<h3>🧮 Calculator</h3>
-<input id="calcInput"><br><br>
 
-<button onclick="press('1')">1</button>
-<button onclick="press('2')">2</button>
-<button onclick="press('3')">3</button>
-<button onclick="press('+')">+</button><br>
+<!-- ========================================================
+     TIME
+======================================================== -->
 
-<button onclick="press('4')">4</button>
-<button onclick="press('5')">5</button>
-<button onclick="press('6')">6</button>
-<button onclick="press('-')">-</button><br>
+<div
+    id="timeBox"
+    class="popup"
+>
 
-<button onclick="press('7')">7</button>
-<button onclick="press('8')">8</button>
-<button onclick="press('9')">9</button>
-<button onclick="press('*')">*</button><br>
+    <h3>
+        🕒 Live Time
+    </h3>
 
-<button onclick="press('0')">0</button>
-<button onclick="calculate()">=</button>
-<button onclick="clearCalc()">C</button>
+    <div class="clock-card">
 
-<br><br>
-<button onclick="closeAll()">Close</button>
+        <div class="clock-label">
+            CURRENT LOCAL TIME
+        </div>
+
+        <div id="timeDisplay">
+            Loading...
+        </div>
+
+        <div class="clock-line"></div>
+
+    </div>
+
+    <button
+        class="popup-close"
+        onclick="closeAll()"
+    >
+        Close
+    </button>
+
 </div>
 
-<!-- TIME -->
-<div id="timeBox" class="popup">
-<h3>🕒 Time</h3>
-<p id="timeDisplay">Loading...</p>
-<button onclick="closeAll()">Close</button>
-</div>
 
+<!-- ========================================================
+     FLOATING FONT COLOR
+======================================================== -->
 
-
-<!-- FONT COLOR PICKER -->
 <div id="fontColorPicker">
-<label style="font-size:12px">Font 🎨</label><br>
-<input type="color" onchange="changeFontColor(this.value)">
+
+    <label>
+        Font 🎨
+    </label>
+
+    <input
+        type="color"
+        value="#eafff0"
+        onchange="changeFontColor(this.value)"
+    >
+
 </div>
+
+
+<!-- ========================================================
+     FOOTER
+======================================================== -->
+
+<footer>
+
+    <strong>
+        NoteZ Timetable
+    </strong>
+
+    <span>
+        • Smart Planning
+    </span>
+
+    <span>
+        • PNG Export
+    </span>
+
+    <span>
+        • PDF Export
+    </span>
+
+</footer>
+
 
 <script>
 
-/* FONT COLOR */
+/* =========================================================
+   FONT COLOR
+========================================================= */
+
 function changeFontColor(color){
-document.body.style.color = color;
-document.querySelectorAll("table, th, td").forEach(el=>{
-el.style.color = color;
-});
+
+    document.body.style.color = color;
+
+    document
+        .querySelectorAll(
+            "table, th, td, .hero p, .brand-info h2"
+        )
+        .forEach(el => {
+
+            el.style.color = color;
+
+        });
+
 }
 
-/* ADD */
+
+/* =========================================================
+   BACKGROUND COLOR
+========================================================= */
+
+function changeBackground(color){
+
+    document.body.style.background = color;
+
+}
+
+
+/* =========================================================
+   ADD TIMETABLE ENTRY
+========================================================= */
+
 function add(){
-let subject = document.getElementById("subject").value;
-let day = document.getElementById("day").value;
-let time = document.getElementById("timeInput").value;
-let date = document.getElementById("dateInput").value;
 
- if(!subject || !time || !date){
-alert("Fill all fields");
-return;
+    const subject =
+        document
+            .getElementById("subject")
+            .value
+            .trim();
+
+    const day =
+        document.getElementById("day").value;
+
+    const time =
+        document.getElementById("timeInput").value;
+
+    const date =
+        document.getElementById("dateInput").value;
+
+
+    if(
+        !subject ||
+        !time ||
+        !date
+    ){
+
+        alert(
+            "Please fill all fields."
+        );
+
+        return;
+
+    }
+
+
+    const tableBody =
+        document.getElementById("tableBody");
+
+
+    const row =
+        tableBody.insertRow();
+
+
+    row.innerHTML = `
+
+        <td>
+            ${escapeHTML(day)}
+        </td>
+
+        <td>
+            ${escapeHTML(subject)}
+        </td>
+
+        <td>
+            ${escapeHTML(time)}
+        </td>
+
+        <td>
+            ${escapeHTML(date)}
+        </td>
+
+        <td>
+
+            <button
+                class="remove-btn"
+                onclick="removeRow(this)"
+            >
+                X
+            </button>
+
+        </td>
+
+    `;
+
+
+    updateEmptyState();
+
+
+    document
+        .getElementById("subject")
+        .value = "";
+
+    document
+        .getElementById("timeInput")
+        .value = "";
+
+    document
+        .getElementById("dateInput")
+        .value = "";
+
+
+    showNotification(
+        "Timetable entry added"
+    );
+
 }
 
-let table = document.getElementById("table");
-let row = table.insertRow();
 
-row.innerHTML = `
-<td>${day}</td>
-<td>${subject}</td>
-<td>${time}</td>
-<td>${date}</td>
-<td><button class="remove-btn" onclick="this.parentElement.parentElement.remove()">X</button></td>
-`;
+/* =========================================================
+   SAFE HTML
+========================================================= */
+
+function escapeHTML(value){
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = value;
+
+    return div.innerHTML;
+
 }
 
-/* POPUP FIXED */
+
+/* =========================================================
+   REMOVE ROW
+========================================================= */
+
+function removeRow(button){
+
+    const row =
+        button.closest("tr");
+
+    if(row){
+
+        row.remove();
+
+    }
+
+    updateEmptyState();
+
+    showNotification(
+        "Timetable entry removed"
+    );
+
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+function updateEmptyState(){
+
+    const body =
+        document.getElementById("tableBody");
+
+    const empty =
+        document.getElementById("emptyState");
+
+
+    if(body.children.length === 0){
+
+        empty.style.display = "block";
+
+    }else{
+
+        empty.style.display = "none";
+
+    }
+
+}
+
+
+/* =========================================================
+   POPUP
+========================================================= */
+
 function openPopup(id){
-document.querySelectorAll(".popup").forEach(p=>p.style.display="none");
-let el = document.getElementById(id);
-if(el){ el.style.display="block"; }
+
+    closeAll();
+
+    const popup =
+        document.getElementById(id);
+
+    const overlay =
+        document.getElementById(
+            "popupOverlay"
+        );
+
+
+    if(popup){
+
+        popup.classList.add("active");
+
+        overlay.classList.add("active");
+
+    }
+
 }
+
+
+/* =========================================================
+   CLOSE POPUPS
+========================================================= */
 
 function closeAll(){
-document.querySelectorAll(".popup").forEach(p=>p.style.display="none");
+
+    document
+        .querySelectorAll(".popup")
+        .forEach(popup => {
+
+            popup.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    const overlay =
+        document.getElementById(
+            "popupOverlay"
+        );
+
+    overlay.classList.remove(
+        "active"
+    );
+
 }
 
-/* CALCULATOR FIX */
-/* CALCULATOR FIX */
-function press(v){
-document.getElementById("calcInput").value += v;
+
+/* =========================================================
+   CALCULATOR
+========================================================= */
+
+function press(value){
+
+    const input =
+        document.getElementById(
+            "calcInput"
+        );
+
+    input.value += value;
+
 }
+
+
+/* =========================================================
+   CALCULATE
+========================================================= */
 
 function calculate(){
-try{
-let val=document.getElementById("calcInput").value;
-document.getElementById("calcInput").value = eval(val);
-}catch{
-alert("Invalid Expression");
+
+    const input =
+        document.getElementById(
+            "calcInput"
+        );
+
+    const expression =
+        input.value.trim();
+
+
+    if(!expression){
+
+        return;
+
+    }
+
+
+    try{
+
+        /*
+         * Basic calculator.
+         * Only calculator characters are allowed.
+         */
+
+        if(
+            !/^[0-9+\-*/().\s]+$/
+                .test(expression)
+        ){
+
+            throw new Error(
+                "Invalid expression"
+            );
+
+        }
+
+
+        const result =
+            Function(
+                `"use strict"; return (${expression})`
+            )();
+
+
+        if(
+            !Number.isFinite(result)
+        ){
+
+            throw new Error(
+                "Invalid result"
+            );
+
+        }
+
+
+        input.value = result;
+
+    }catch(error){
+
+        input.value = "";
+
+        alert(
+            "Invalid Expression"
+        );
+
+    }
+
 }
-}
+
+
+/* =========================================================
+   CLEAR CALCULATOR
+========================================================= */
 
 function clearCalc(){
-document.getElementById("calcInput").value="";
-}
-/* TIME FIX */
-setInterval(()=>{
-let el=document.getElementById("timeDisplay");
-if(el){
-el.innerText=new Date().toLocaleTimeString();
-}function press(v){
-document.getElementById("calcInput").value += v;
-}
-},1000);
 
-/* DOWNLOAD */
-function downloadPNG(){
-html2canvas(document.getElementById("downloadArea")).then(canvas=>{
-let link=document.createElement("a");
-link.download="timetable.png";
-link.href=canvas.toDataURL();
-link.click();
-});
+    document.getElementById(
+        "calcInput"
+    ).value = "";
+
 }
+
+
+/* =========================================================
+   LIVE CLOCK
+========================================================= */
+
+function updateClock(){
+
+    const element =
+        document.getElementById(
+            "timeDisplay"
+        );
+
+
+    if(!element){
+
+        return;
+
+    }
+
+
+    const now =
+        new Date();
+
+
+    element.innerText =
+        now.toLocaleTimeString(
+            [],
+            {
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit"
+            }
+        );
+
+}
+
+
+updateClock();
+
+setInterval(
+    updateClock,
+    1000
+);
+
+
+/* =========================================================
+   DOWNLOAD PNG
+========================================================= */
+
+function downloadPNG(){
+
+    const area =
+        document.getElementById(
+            "downloadArea"
+        );
+
+
+    if(!area){
+
+        return;
+
+    }
+
+
+    showNotification(
+        "Preparing PNG..."
+    );
+
+
+    html2canvas(
+        area,
+        {
+            backgroundColor:"#06100a",
+            scale:2,
+            useCORS:true
+        }
+    )
+    .then(canvas => {
+
+        const link =
+            document.createElement(
+                "a"
+            );
+
+        link.download =
+            "notez-timetable.png";
+
+        link.href =
+            canvas.toDataURL(
+                "image/png"
+            );
+
+        link.click();
+
+
+        showNotification(
+            "PNG downloaded"
+        );
+
+    })
+    .catch(() => {
+
+        alert(
+            "Unable to create PNG."
+        );
+
+    });
+
+}
+
+
+/* =========================================================
+   DOWNLOAD PDF
+========================================================= */
 
 function downloadPDF(){
-html2pdf().from(document.getElementById("downloadArea")).save("timetable.pdf");
+
+    const area =
+        document.getElementById(
+            "downloadArea"
+        );
+
+
+    if(!area){
+
+        return;
+
+    }
+
+
+    showNotification(
+        "Preparing PDF..."
+    );
+
+
+    const options = {
+
+        margin:0.35,
+
+        filename:
+            "notez-timetable.pdf",
+
+        image:{
+            type:"jpeg",
+            quality:.98
+        },
+
+        html2canvas:{
+            scale:2,
+            backgroundColor:"#06100a"
+        },
+
+        jsPDF:{
+            unit:"in",
+            format:"a4",
+            orientation:"landscape"
+        }
+
+    };
+
+
+    html2pdf()
+        .set(options)
+        .from(area)
+        .save()
+        .then(() => {
+
+            showNotification(
+                "PDF downloaded"
+            );
+
+        });
+
 }
+
+
+/* =========================================================
+   SMALL NOTIFICATION
+========================================================= */
+
+function showNotification(message){
+
+    let notification =
+        document.getElementById(
+            "notezNotification"
+        );
+
+
+    if(!notification){
+
+        notification =
+            document.createElement(
+                "div"
+            );
+
+        notification.id =
+            "notezNotification";
+
+
+        notification.style.cssText = `
+
+            position:fixed;
+            left:50%;
+            bottom:30px;
+            transform:translateX(-50%) translateY(20px);
+            z-index:3000;
+
+            padding:11px 16px;
+
+            border:1px solid rgba(34,197,94,.3);
+            border-radius:999px;
+
+            background:rgba(4,15,8,.94);
+            color:#7df0a2;
+
+            font-size:9px;
+            font-weight:900;
+
+            box-shadow:
+                0 15px 40px rgba(0,0,0,.4),
+                0 0 25px rgba(34,197,94,.08);
+
+            backdrop-filter:blur(15px);
+
+            opacity:0;
+
+            transition:
+                opacity .25s ease,
+                transform .25s ease;
+
+        `;
+
+
+        document.body.appendChild(
+            notification
+        );
+
+    }
+
+
+    notification.textContent =
+        "✓ " + message;
+
+
+    requestAnimationFrame(() => {
+
+        notification.style.opacity =
+            "1";
+
+        notification.style.transform =
+            "translateX(-50%) translateY(0)";
+
+    });
+
+
+    clearTimeout(
+        notification.hideTimer
+    );
+
+
+    notification.hideTimer =
+        setTimeout(() => {
+
+            notification.style.opacity =
+                "0";
+
+            notification.style.transform =
+                "translateX(-50%) translateY(20px)";
+
+        },2200);
+
+}
+
+
+/* =========================================================
+   KEYBOARD SUPPORT
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(event.key === "Escape"){
+
+            closeAll();
+
+        }
+
+
+        /*
+         * Ctrl + Enter adds timetable entry.
+         */
+
+        if(
+            event.ctrlKey &&
+            event.key === "Enter"
+        ){
+
+            add();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ENTER KEY IN SUBJECT
+========================================================= */
+
+document
+    .getElementById("subject")
+    .addEventListener(
+        "keydown",
+        event => {
+
+            if(event.key === "Enter"){
+
+                add();
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   INITIAL STATE
+========================================================= */
+
+updateEmptyState();
 
 </script>
 
