@@ -12,6 +12,7 @@
 
 <title>NoteZ Timetable</title>
 
+
 <!-- =========================================================
      EXPORT LIBRARIES
 ========================================================= -->
@@ -49,17 +50,20 @@
 
 }
 
+
 *{
 
     box-sizing:border-box;
 
 }
 
+
 html{
 
     scroll-behavior:smooth;
 
 }
+
 
 body{
 
@@ -139,6 +143,7 @@ body::before{
 
 }
 
+
 @keyframes gridMove{
 
     from{
@@ -165,6 +170,7 @@ body::after{
     position:fixed;
 
     width:500px;
+
     height:500px;
 
     border-radius:50%;
@@ -175,6 +181,7 @@ body::after{
     filter:blur(130px);
 
     left:50%;
+
     top:45%;
 
     transform:
@@ -188,6 +195,7 @@ body::after{
         glowPulse 5s ease-in-out infinite;
 
 }
+
 
 @keyframes glowPulse{
 
@@ -301,6 +309,7 @@ header{
 
 }
 
+
 @keyframes logoFloat{
 
     0%,
@@ -382,6 +391,7 @@ header{
 
 }
 
+
 .back-link:hover{
 
     color:var(--green);
@@ -409,6 +419,7 @@ header{
 
 }
 
+
 .top-buttons button{
 
     width:38px;
@@ -433,6 +444,7 @@ header{
     transition:.2s ease;
 
 }
+
 
 .top-buttons button:hover{
 
@@ -492,6 +504,7 @@ header{
         heroIn .7s ease both;
 
 }
+
 
 @keyframes heroIn{
 
@@ -566,6 +579,7 @@ header{
         dotPulse 1.8s infinite;
 
 }
+
 
 @keyframes dotPulse{
 
@@ -661,6 +675,7 @@ header{
         cardIn .6s ease both;
 
 }
+
 
 @keyframes cardIn{
 
@@ -840,6 +855,105 @@ select option{
 
 
 /* =========================================================
+   TIMETABLE HEADER / ACTIONS
+========================================================= */
+
+.table-heading{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin-bottom:12px;
+
+}
+
+
+.table-heading-left{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:4px;
+
+}
+
+
+.table-heading strong{
+
+    font-size:12px;
+
+}
+
+
+.table-heading span{
+
+    color:#52685d;
+
+    font-size:8px;
+
+}
+
+
+.table-actions{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:7px;
+
+}
+
+
+.delete-all-btn{
+
+    border:
+        1px solid
+        rgba(239,68,68,.2);
+
+    background:
+        rgba(239,68,68,.055);
+
+    color:#ee8d8d;
+
+    min-height:34px;
+
+    padding:
+        0 12px;
+
+    border-radius:9px;
+
+    cursor:pointer;
+
+    font-size:8px;
+
+    font-weight:900;
+
+    transition:.2s ease;
+
+}
+
+
+.delete-all-btn:hover{
+
+    color:#fff;
+
+    background:
+        rgba(239,68,68,.16);
+
+    border-color:
+        rgba(239,68,68,.45);
+
+}
+
+
+/* =========================================================
    DOWNLOAD AREA
 ========================================================= */
 
@@ -858,43 +972,7 @@ select option{
     background:
         rgba(0,0,0,.13);
 
-    /*
-     * IMPORTANT:
-     * Keep screen overflow here.
-     * Export functions below create a
-     * separate non-overflowing copy.
-     */
-
     overflow:hidden;
-
-}
-
-
-.table-heading{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:10px;
-
-}
-
-
-.table-heading strong{
-
-    font-size:12px;
-
-}
-
-
-.table-heading span{
-
-    color:#52685d;
-
-    font-size:8px;
 
 }
 
@@ -1613,6 +1691,197 @@ footer strong{
 
 
 /* =========================================================
+   EXPORT-ONLY STYLES
+   These styles are intentionally separate from the
+   normal responsive timetable.
+========================================================= */
+
+.notez-export-wrapper{
+
+    position:absolute;
+
+    left:-12000px;
+
+    top:0;
+
+    width:1000px;
+
+    padding:0;
+
+    margin:0;
+
+    background:#06100a;
+
+    color:#eafff0;
+
+    overflow:visible;
+
+}
+
+
+.notez-export-wrapper .export-card{
+
+    width:1000px;
+
+    min-width:1000px;
+
+    padding:28px;
+
+    background:#06100a;
+
+    color:#eafff0;
+
+    border:
+        1px solid
+        #173c25;
+
+    border-radius:0;
+
+}
+
+
+.notez-export-wrapper .export-title{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:18px;
+
+    padding-bottom:14px;
+
+    border-bottom:
+        1px solid
+        #173c25;
+
+}
+
+
+.notez-export-wrapper .export-title strong{
+
+    color:#eafff0;
+
+    font-size:18px;
+
+    font-weight:950;
+
+}
+
+
+.notez-export-wrapper .export-title span{
+
+    color:#6c8877;
+
+    font-size:10px;
+
+}
+
+
+.notez-export-wrapper .table-scroll{
+
+    width:1000px;
+
+    overflow:visible;
+
+}
+
+
+.notez-export-wrapper table{
+
+    width:1000px;
+
+    min-width:1000px;
+
+    max-width:1000px;
+
+    table-layout:fixed;
+
+    border-collapse:collapse;
+
+    border-spacing:0;
+
+    border:
+        1px solid
+        #245b37;
+
+    background:#06100a;
+
+}
+
+
+.notez-export-wrapper th{
+
+    height:48px;
+
+    padding:12px;
+
+    color:#72e59a !important;
+
+    background:#0c2917 !important;
+
+    border:
+        1px solid
+        #245b37 !important;
+
+    font-size:10px;
+
+    font-weight:950;
+
+    text-align:center;
+
+}
+
+
+.notez-export-wrapper td{
+
+    min-height:48px;
+
+    padding:13px 12px;
+
+    color:#d4e4d9 !important;
+
+    background:#07150c !important;
+
+    border:
+        1px solid
+        #183c26 !important;
+
+    font-size:11px;
+
+    text-align:center;
+
+    word-break:break-word;
+
+}
+
+
+.notez-export-wrapper td:last-child{
+
+    width:90px;
+
+}
+
+
+.notez-export-wrapper .remove-btn{
+
+    width:30px;
+
+    height:30px;
+
+    color:#ef8888 !important;
+
+    background:#251010 !important;
+
+    border:
+        1px solid
+        #632222 !important;
+
+}
+
+
+/* =========================================================
    RESPONSIVE
 ========================================================= */
 
@@ -1625,12 +1894,14 @@ footer strong{
 
     }
 
+
     .field:first-child{
 
         grid-column:
             1 / -1;
 
     }
+
 
     .add-btn{
 
@@ -1654,17 +1925,20 @@ footer strong{
 
     }
 
+
     .brand-info span{
 
         display:none;
 
     }
 
+
     .brand-info h2{
 
         font-size:13px;
 
     }
+
 
     .logo{
 
@@ -1674,17 +1948,20 @@ footer strong{
 
     }
 
+
     .back-link{
 
         display:none;
 
     }
 
+
     .top-buttons{
 
         gap:4px;
 
     }
+
 
     .top-buttons button{
 
@@ -1696,6 +1973,7 @@ footer strong{
 
     }
 
+
     .container{
 
         width:92%;
@@ -1706,11 +1984,13 @@ footer strong{
 
     }
 
+
     .hero{
 
         margin-bottom:30px;
 
     }
+
 
     .hero h1{
 
@@ -1720,11 +2000,13 @@ footer strong{
 
     }
 
+
     .hero p{
 
         font-size:10px;
 
     }
+
 
     .tool-panel{
 
@@ -1734,11 +2016,13 @@ footer strong{
 
     }
 
+
     .form-row{
 
         grid-template-columns:1fr;
 
     }
+
 
     .field:first-child{
 
@@ -1746,11 +2030,13 @@ footer strong{
 
     }
 
+
     #downloadArea{
 
         padding:10px;
 
     }
+
 
     .table-heading{
 
@@ -1758,9 +2044,24 @@ footer strong{
 
         flex-direction:column;
 
-        gap:4px;
+        gap:10px;
 
     }
+
+
+    .table-actions{
+
+        width:100%;
+
+    }
+
+
+    .delete-all-btn{
+
+        width:100%;
+
+    }
+
 
     #fontColorPicker{
 
@@ -1780,6 +2081,7 @@ footer strong{
         font-size:40px;
 
     }
+
 
     .top-buttons button{
 
@@ -1830,6 +2132,7 @@ footer strong{
             N
         </div>
 
+
         <div class="brand-info">
 
             <h2>
@@ -1862,12 +2165,14 @@ footer strong{
             ⚙️
         </button>
 
+
         <button
             title="Calculator"
             onclick="openPopup('calcBox')"
         >
             🧮
         </button>
+
 
         <button
             title="Live Time"
@@ -1876,12 +2181,14 @@ footer strong{
             🕒
         </button>
 
+
         <button
             title="Download PNG"
             onclick="downloadPNG()"
         >
             🖼
         </button>
+
 
         <button
             title="Download PDF"
@@ -2055,7 +2362,7 @@ footer strong{
 
 
         <!-- =================================================
-             DOWNLOAD AREA
+             TIMETABLE
         ================================================= -->
 
         <div id="downloadArea">
@@ -2063,13 +2370,31 @@ footer strong{
 
             <div class="table-heading">
 
-                <strong>
-                    📅 My Timetable
-                </strong>
 
-                <span>
-                    Your schedule workspace
-                </span>
+                <div class="table-heading-left">
+
+                    <strong>
+                        📅 My Timetable
+                    </strong>
+
+                    <span>
+                        Your schedule workspace
+                    </span>
+
+                </div>
+
+
+                <div class="table-actions">
+
+                    <button
+                        class="delete-all-btn"
+                        onclick="deleteTimetable()"
+                    >
+                        🗑 Delete Timetable
+                    </button>
+
+                </div>
+
 
             </div>
 
@@ -2435,6 +2760,16 @@ footer strong{
 <script>
 
 /* =========================================================
+   STORAGE
+   ---------------------------------------------------------
+   Timetable remains saved until user deletes it.
+========================================================= */
+
+const STORAGE_KEY =
+    "notez_timetable_entries_v1";
+
+
+/* =========================================================
    FONT COLOR
 ========================================================= */
 
@@ -2492,6 +2827,246 @@ function escapeHTML(value){
 
 
 /* =========================================================
+   GET SAVED TIMETABLE
+========================================================= */
+
+function getSavedTimetable(){
+
+    try{
+
+        const saved =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
+
+        if(!saved){
+
+            return [];
+
+        }
+
+
+        const parsed =
+            JSON.parse(saved);
+
+
+        if(!Array.isArray(parsed)){
+
+            return [];
+
+        }
+
+
+        return parsed;
+
+
+    }catch(error){
+
+        console.error(
+            "Timetable load error:",
+            error
+        );
+
+
+        return [];
+
+    }
+
+}
+
+
+/* =========================================================
+   SAVE TIMETABLE
+========================================================= */
+
+function saveTimetable(){
+
+    try{
+
+        const rows =
+            document
+                .querySelectorAll(
+                    "#tableBody tr"
+                );
+
+
+        const timetable =
+            Array.from(rows)
+                .map(
+                    row => {
+
+                        const cells =
+                            row.querySelectorAll(
+                                "td"
+                            );
+
+
+                        return {
+
+                            day:
+                                cells[0]
+                                    ?.textContent
+                                    .trim() || "",
+
+                            subject:
+                                cells[1]
+                                    ?.textContent
+                                    .trim() || "",
+
+                            time:
+                                cells[2]
+                                    ?.textContent
+                                    .trim() || "",
+
+                            date:
+                                cells[3]
+                                    ?.textContent
+                                    .trim() || ""
+
+                        };
+
+                    }
+                );
+
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(
+                timetable
+            )
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Timetable save error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD TIMETABLE
+========================================================= */
+
+function loadTimetable(){
+
+    const saved =
+        getSavedTimetable();
+
+
+    const tableBody =
+        document
+            .getElementById(
+                "tableBody"
+            );
+
+
+    if(!tableBody){
+
+        return;
+
+    }
+
+
+    tableBody.innerHTML =
+        "";
+
+
+    saved.forEach(
+        item => {
+
+            createTableRow(
+                item.day,
+                item.subject,
+                item.time,
+                item.date,
+                false
+            );
+
+        }
+    );
+
+
+    updateEmptyState();
+
+}
+
+
+/* =========================================================
+   CREATE TABLE ROW
+========================================================= */
+
+function createTableRow(
+    day,
+    subject,
+    time,
+    date,
+    shouldSave = true
+){
+
+    const tableBody =
+        document
+            .getElementById(
+                "tableBody"
+            );
+
+
+    const row =
+        tableBody.insertRow();
+
+
+    row.innerHTML = `
+
+        <td>
+            ${escapeHTML(day)}
+        </td>
+
+        <td>
+            ${escapeHTML(subject)}
+        </td>
+
+        <td>
+            ${escapeHTML(time)}
+        </td>
+
+        <td>
+            ${escapeHTML(date)}
+        </td>
+
+        <td>
+
+            <button
+                class="remove-btn"
+                onclick="removeRow(this)"
+                title="Remove this timetable entry"
+            >
+                X
+            </button>
+
+        </td>
+
+    `;
+
+
+    if(shouldSave){
+
+        saveTimetable();
+
+    }
+
+
+    return row;
+
+}
+
+
+/* =========================================================
    ADD
 ========================================================= */
 
@@ -2537,45 +3112,13 @@ function add(){
     }
 
 
-    const tableBody =
-        document
-            .getElementById("tableBody");
-
-
-    const row =
-        tableBody.insertRow();
-
-
-    row.innerHTML = `
-
-        <td>
-            ${escapeHTML(day)}
-        </td>
-
-        <td>
-            ${escapeHTML(subject)}
-        </td>
-
-        <td>
-            ${escapeHTML(time)}
-        </td>
-
-        <td>
-            ${escapeHTML(date)}
-        </td>
-
-        <td>
-
-            <button
-                class="remove-btn"
-                onclick="removeRow(this)"
-            >
-                X
-            </button>
-
-        </td>
-
-    `;
+    createTableRow(
+        day,
+        subject,
+        time,
+        date,
+        true
+    );
 
 
     updateEmptyState();
@@ -2597,14 +3140,14 @@ function add(){
 
 
     showNotification(
-        "Timetable entry added"
+        "Timetable saved permanently"
     );
 
 }
 
 
 /* =========================================================
-   REMOVE
+   REMOVE ONE ROW
 ========================================================= */
 
 function removeRow(button){
@@ -2620,11 +3163,86 @@ function removeRow(button){
     }
 
 
+    saveTimetable();
+
+
     updateEmptyState();
 
 
     showNotification(
-        "Timetable entry removed"
+        "Timetable entry deleted"
+    );
+
+}
+
+
+/* =========================================================
+   DELETE ENTIRE TIMETABLE
+========================================================= */
+
+function deleteTimetable(){
+
+    const saved =
+        getSavedTimetable();
+
+
+    if(saved.length === 0){
+
+        showNotification(
+            "No timetable to delete"
+        );
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            "Delete your complete timetable permanently?\n\nThis will remove all saved timetable entries from this browser."
+        );
+
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    try{
+
+        localStorage.removeItem(
+            STORAGE_KEY
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Timetable delete error:",
+            error
+        );
+
+    }
+
+
+    const tableBody =
+        document
+            .getElementById(
+                "tableBody"
+            );
+
+
+    tableBody.innerHTML =
+        "";
+
+
+    updateEmptyState();
+
+
+    showNotification(
+        "Timetable permanently deleted"
     );
 
 }
@@ -2638,12 +3256,26 @@ function updateEmptyState(){
 
     const body =
         document
-            .getElementById("tableBody");
+            .getElementById(
+                "tableBody"
+            );
 
 
     const empty =
         document
-            .getElementById("emptyState");
+            .getElementById(
+                "emptyState"
+            );
+
+
+    if(
+        !body ||
+        !empty
+    ){
+
+        return;
+
+    }
 
 
     if(
@@ -2776,7 +3408,6 @@ function calculate(){
 
     try{
 
-
         if(
             !/^[0-9+\-*/().\s]+$/
                 .test(expression)
@@ -2886,33 +3517,41 @@ setInterval(
 
 
 /* =========================================================
-   EXPORT CLONE
+   CREATE EXPORT AREA
    ---------------------------------------------------------
-   THIS IS THE IMPORTANT FIX.
-   
-   The normal timetable uses:
-   
-       overflow-x:auto
-       min-width:650px
-   
-   which is good for phones but bad for screenshot/PDF
-   export.
+   IMPORTANT FIX:
+   We no longer export the responsive screen container
+   directly.
 
-   This function creates a temporary full-width copy,
-   removes the clipping, and makes the entire table
-   visible to html2canvas/html2pdf.
+   We create a completely independent export DOM with:
+   - fixed 1000px width
+   - solid background
+   - no overflow
+   - no backdrop filter
+   - no negative z-index
+   - all table rows
 ========================================================= */
 
 function createExportArea(){
 
-    const original =
+    const source =
         document
             .getElementById(
                 "downloadArea"
             );
 
 
-    if(!original){
+    const sourceTable =
+        document
+            .getElementById(
+                "table"
+            );
+
+
+    if(
+        !source ||
+        !sourceTable
+    ){
 
         throw new Error(
             "Timetable area not found."
@@ -2921,288 +3560,204 @@ function createExportArea(){
     }
 
 
-    const clone =
-        original.cloneNode(true);
-
-
-    /*
-     * Give the export a unique ID.
-     */
-
-    clone.id =
-        "notezExportArea";
-
-
-    /*
-     * IMPORTANT:
-     * Remove screen overflow.
-     */
-
-    clone.style.width =
-        "1000px";
-
-    clone.style.minWidth =
-        "1000px";
-
-    clone.style.maxWidth =
-        "1000px";
-
-    clone.style.height =
-        "auto";
-
-    clone.style.minHeight =
-        "auto";
-
-    clone.style.maxHeight =
-        "none";
-
-    clone.style.overflow =
-        "visible";
-
-    clone.style.position =
-        "fixed";
-
-    clone.style.left =
-        "-10000px";
-
-    clone.style.top =
-        "0";
-
-    clone.style.zIndex =
-        "-1";
-
-    clone.style.margin =
-        "0";
-
-    clone.style.padding =
-        "24px";
-
-    clone.style.background =
-        "#06100a";
-
-    clone.style.color =
-        "#eafff0";
-
-    clone.style.border =
-        "1px solid rgba(34,197,94,.2)";
-
-
-    /*
-     * Find cloned scroll wrapper.
-     */
-
-    const scroll =
-        clone.querySelector(
-            ".table-scroll"
+    const wrapper =
+        document.createElement(
+            "div"
         );
 
 
-    if(scroll){
-
-        scroll.style.width =
-            "100%";
-
-        scroll.style.overflow =
-            "visible";
-
-        scroll.style.height =
-            "auto";
-
-        scroll.style.maxHeight =
-            "none";
-
-    }
+    wrapper.className =
+        "notez-export-wrapper";
 
 
-    /*
-     * Find cloned table.
-     */
-
-    const table =
-        clone.querySelector(
-            "table"
+    const exportCard =
+        document.createElement(
+            "div"
         );
 
 
-    if(table){
-
-        table.style.width =
-            "100%";
-
-        table.style.minWidth =
-            "0";
-
-        table.style.maxWidth =
-            "none";
-
-        table.style.tableLayout =
-            "fixed";
-
-        table.style.overflow =
-            "visible";
-
-        table.style.background =
-            "#06100a";
-
-    }
+    exportCard.className =
+        "export-card";
 
 
-    /*
-     * Force export colors.
-     * This avoids transparent/unsupported
-     * backdrop effects during capture.
-     */
+    /* =====================================================
+       EXPORT TITLE
+    ===================================================== */
 
-    clone
-        .querySelectorAll("*")
-        .forEach(
-            element => {
-
-                element.style.backdropFilter =
-                    "none";
-
-                element.style.webkitBackdropFilter =
-                    "none";
-
-            }
+    const title =
+        document.createElement(
+            "div"
         );
 
 
-    /*
-     * Make the table readable in export.
-     */
-
-    clone
-        .querySelectorAll("th")
-        .forEach(
-            cell => {
-
-                cell.style.color =
-                    "#67df90";
-
-                cell.style.background =
-                    "#0b2414";
-
-                cell.style.borderColor =
-                    "rgba(34,197,94,.25)";
-
-            }
-        );
+    title.className =
+        "export-title";
 
 
-    clone
-        .querySelectorAll("td")
-        .forEach(
-            cell => {
+    title.innerHTML = `
 
-                cell.style.color =
-                    "#d0ded5";
+        <strong>
+            📅 My Timetable
+        </strong>
 
-                cell.style.background =
-                    "#06140b";
+        <span>
+            NoteZ • Smart Productivity Tool
+        </span>
 
-                cell.style.borderColor =
-                    "rgba(34,197,94,.14)";
-
-            }
-        );
+    `;
 
 
-    /*
-     * Export-only title styling.
-     */
-
-    const heading =
-        clone.querySelector(
-            ".table-heading"
-        );
-
-
-    if(heading){
-
-        heading.style.display =
-            "flex";
-
-        heading.style.width =
-            "100%";
-
-        heading.style.color =
-            "#eafff0";
-
-    }
-
-
-    /*
-     * Remove screen empty state if
-     * actual timetable rows exist.
-     */
-
-    const body =
-        document
-            .getElementById(
-                "tableBody"
-            );
-
-
-    const exportEmpty =
-        clone.querySelector(
-            ".empty-state"
-        );
-
-
-    if(
-        body &&
-        body.children.length > 0 &&
-        exportEmpty
-    ){
-
-        exportEmpty.style.display =
-            "none";
-
-    }
-
-
-    /*
-     * Remove button hover/animation
-     * effects from export.
-     */
-
-    clone
-        .querySelectorAll(
-            "button"
-        )
-        .forEach(
-            button => {
-
-                button.style.animation =
-                    "none";
-
-                button.style.transform =
-                    "none";
-
-            }
-        );
-
-
-    /*
-     * Add clone to document.
-     */
-
-    document.body.appendChild(
-        clone
+    exportCard.appendChild(
+        title
     );
 
 
-    return clone;
+    /* =====================================================
+       CLONE TABLE
+    ===================================================== */
+
+    const table =
+        sourceTable.cloneNode(
+            true
+        );
+
+
+    table.removeAttribute(
+        "id"
+    );
+
+
+    /*
+     * Remove the action column from
+     * the export because X buttons
+     * are website controls, not
+     * timetable content.
+     */
+
+    const headerCells =
+        table.querySelectorAll(
+            "thead th"
+        );
+
+
+    if(headerCells.length > 0){
+
+        headerCells[
+            headerCells.length - 1
+        ].remove();
+
+    }
+
+
+    table
+        .querySelectorAll(
+            "tbody tr"
+        )
+        .forEach(
+            row => {
+
+                const cells =
+                    row.querySelectorAll(
+                        "td"
+                    );
+
+
+                if(cells.length > 0){
+
+                    cells[
+                        cells.length - 1
+                    ].remove();
+
+                }
+
+            }
+        );
+
+
+    /*
+     * If there are no rows,
+     * show a proper message.
+     */
+
+    const rows =
+        table.querySelectorAll(
+            "tbody tr"
+        );
+
+
+    if(rows.length === 0){
+
+        const emptyRow =
+            document.createElement(
+                "tr"
+            );
+
+
+        emptyRow.innerHTML = `
+
+            <td
+                colspan="4"
+                style="
+                    padding:40px;
+                    color:#7c9485;
+                    background:#07150c;
+                    text-align:center;
+                "
+            >
+                No timetable entries yet.
+            </td>
+
+        `;
+
+
+        table
+            .querySelector("tbody")
+            .appendChild(
+                emptyRow
+            );
+
+    }
+
+
+    exportCard.appendChild(
+        table
+    );
+
+
+    wrapper.appendChild(
+        exportCard
+    );
+
+
+    /*
+     * Append normally to body.
+     *
+     * IMPORTANT:
+     * No z-index:-1.
+     * No display:none.
+     * No visibility:hidden.
+     *
+     * This prevents html2canvas from
+     * generating a white/blank result.
+     */
+
+    document.body.appendChild(
+        wrapper
+    );
+
+
+    return wrapper;
 
 }
 
 
 /* =========================================================
-   REMOVE EXPORT CLONE
+   REMOVE EXPORT AREA
 ========================================================= */
 
-function removeExportArea(exportArea){
+function removeExportArea(
+    exportArea
+){
 
     if(
         exportArea &&
@@ -3219,12 +3774,45 @@ function removeExportArea(exportArea){
 
 
 /* =========================================================
+   WAIT FOR EXPORT RENDER
+========================================================= */
+
+function waitForExportRender(){
+
+    return new Promise(
+        resolve => {
+
+            requestAnimationFrame(
+                () => {
+
+                    requestAnimationFrame(
+                        () => {
+
+                            setTimeout(
+                                resolve,
+                                80
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
    DOWNLOAD PNG
 ========================================================= */
 
 async function downloadPNG(){
 
-    let exportArea = null;
+    let exportArea =
+        null;
 
 
     try{
@@ -3248,23 +3836,11 @@ async function downloadPNG(){
 
 
         showNotification(
-            "Preparing full timetable PNG..."
+            "Preparing complete timetable PNG..."
         );
 
 
-        /*
-         * Wait for browser layout.
-         */
-
-        await new Promise(
-            resolve =>
-                requestAnimationFrame(
-                    () =>
-                        requestAnimationFrame(
-                            resolve
-                        )
-                )
-        );
+        await waitForExportRender();
 
 
         const canvas =
@@ -3274,26 +3850,38 @@ async function downloadPNG(){
 
                     scale:2,
 
+                    backgroundColor:
+                        "#06100a",
+
                     useCORS:true,
 
                     allowTaint:false,
 
-                    backgroundColor:
-                        "#06100a",
+                    logging:false,
 
                     width:1000,
 
+                    height:
+                        exportArea.scrollHeight,
+
                     windowWidth:1200,
+
+                    windowHeight:
+                        exportArea.scrollHeight,
 
                     scrollX:0,
 
                     scrollY:0,
 
-                    logging:false,
-
                     imageTimeout:0
 
                 }
+            );
+
+
+        const image =
+            canvas.toDataURL(
+                "image/png"
             );
 
 
@@ -3308,10 +3896,7 @@ async function downloadPNG(){
 
 
         link.href =
-            canvas.toDataURL(
-                "image/png",
-                1
-            );
+            image;
 
 
         document.body.appendChild(
@@ -3326,7 +3911,7 @@ async function downloadPNG(){
 
 
         showNotification(
-            "Complete timetable PNG downloaded"
+            "Complete timetable PNG saved"
         );
 
 
@@ -3360,7 +3945,8 @@ async function downloadPNG(){
 
 async function downloadPDF(){
 
-    let exportArea = null;
+    let exportArea =
+        null;
 
 
     try{
@@ -3384,33 +3970,17 @@ async function downloadPDF(){
 
 
         showNotification(
-            "Preparing full timetable PDF..."
+            "Preparing complete timetable PDF..."
         );
 
 
-        /*
-         * Give cloned DOM time to render.
-         */
-
-        await new Promise(
-            resolve =>
-                requestAnimationFrame(
-                    () =>
-                        requestAnimationFrame(
-                            resolve
-                        )
-                )
-        );
+        await waitForExportRender();
 
 
         const options = {
 
-            margin:[
-                0.35,
-                0.35,
-                0.35,
-                0.35
-            ],
+            margin:
+                [0.35,0.35,0.35,0.35],
 
             filename:
                 "notez-timetable.pdf",
@@ -3419,7 +3989,7 @@ async function downloadPDF(){
 
                 type:"jpeg",
 
-                quality:.98
+                quality:0.98
 
             },
 
@@ -3434,6 +4004,8 @@ async function downloadPDF(){
                 backgroundColor:
                     "#06100a",
 
+                logging:false,
+
                 width:1000,
 
                 windowWidth:1200,
@@ -3441,8 +4013,6 @@ async function downloadPDF(){
                 scrollX:0,
 
                 scrollY:0,
-
-                logging:false,
 
                 imageTimeout:0
 
@@ -3483,7 +4053,7 @@ async function downloadPDF(){
 
 
         showNotification(
-            "Complete timetable PDF downloaded"
+            "Complete timetable PDF saved"
         );
 
 
@@ -3515,7 +4085,9 @@ async function downloadPDF(){
    NOTIFICATION
 ========================================================= */
 
-function showNotification(message){
+function showNotification(
+    message
+){
 
     let notification =
         document
@@ -3560,7 +4132,7 @@ function showNotification(message){
             border-radius:999px;
 
             background:
-                rgba(4,15,8,.94);
+                rgba(4,15,8,.96);
 
             color:#7df0a2;
 
@@ -3691,6 +4263,13 @@ document
 
         }
     );
+
+
+/* =========================================================
+   LOAD SAVED DATA WHEN WEBSITE OPENS
+========================================================= */
+
+loadTimetable();
 
 
 /* =========================================================
